@@ -5,7 +5,6 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain_core.prompts import ChatPromptTemplate
-from typing import Optional
 
 # load environment variables
 load_dotenv()
@@ -69,7 +68,7 @@ async def translate_text(request: TranslationRequest):
             raise HTTPException(status_code=400, detail="Text cannot be empty")
 
         # Invoke the translation chain
-        ai_msg = await chain.invoke(
+        ai_msg = chain.invoke(
             {
                 "input_language": request.input_language,
                 "output_language": request.output_language,
@@ -92,7 +91,7 @@ async def translate_text(request: TranslationRequest):
 @app.get("/test")
 async def test_translation():
     try:
-        ai_msg = await chain.invoke(
+        ai_msg = chain.invoke(
             {
                 "input_language": "English",
                 "output_language": "Malay",
